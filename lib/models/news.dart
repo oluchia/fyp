@@ -5,10 +5,11 @@ class News {
   final String date;
   final String description;
   final String imageUrl;
-  final String schoolID;
+  final String schoolId;
+  final bool isSportsNews;
 
   const News({this.id, this.title, this.author, this.description, 
-              this.date, this.imageUrl, this.schoolID});
+              this.date, this.imageUrl, this.schoolId, this.isSportsNews});
 
   News.fromMap(Map<String, dynamic> data, String id) : this(
     id: id,
@@ -17,6 +18,7 @@ class News {
     date: data['date'],
     description: data['description'],
     imageUrl: data['imageUrl'],
-    schoolID: data['schoolID'],
+    schoolId: data['schoolID'],
+    isSportsNews: data['isSportsNews']
   );
 }

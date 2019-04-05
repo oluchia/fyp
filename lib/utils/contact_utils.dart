@@ -1,4 +1,4 @@
-import 'package:hello_world/models/contact.dart';
+import 'package:fyp/models/contact.dart';
 
 List<Contact> createContactList(List data) {
   List<Contact> list = new List();

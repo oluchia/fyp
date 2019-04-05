@@ -22,10 +22,37 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+configurations.all {
+    resolutionStrategy {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.core') {
+                details.useVersion "1.0.1"
+            }
+            if (details.requested.group == 'androidx.lifecycle') {
+                details.useVersion "2.0.0"
+            }
+            if (details.requested.group == 'androidx.versionedparcelable') {
+                details.useVersion "1.0.0"
+            }
+            if (details.requested.group == 'androidx.fragment') {
+                details.useVersion "1.0.0"
+            }
+            if (details.requested.group == 'androidx.appcompat') {
+                details.useVersion "1.0.1"
+            }
+        }
+    }
+}
+
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 
     lintOptions {
         disable 'InvalidPackage'
@@ -33,12 +60,12 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.helloworld"
+        applicationId "ie.nuigalway.it.abstract"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -55,9 +82,11 @@ flutter {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/services/rest_calls.dart';
-import 'package:hello_world/models/news.dart';
-import 'package:hello_world/news_row.dart';
+import 'package:fyp/services/rest_calls.dart';
+import 'package:fyp/models/news.dart';
+import 'package:fyp/pages/news_row.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hello_world/utils/progress.dart';
+import 'package:fyp/utils/progress.dart';
+import 'package:fyp/services/root_page.dart';
+import 'package:fyp/utils/strings.dart';
 
 class NewsPage extends StatefulWidget {
 
@@ -11,34 +13,58 @@ class NewsPage extends StatefulWidget {
   State createState() => NewsPageState();
 }
 
-class NewsPageState extends State<NewsPage> {
+class NewsPageState extends State<NewsPage> with SingleTickerProviderStateMixin {
   List<News> newsList = [];
+  String schoolId = RootPageState.client.schoolId;
+  TabController controller;
 
   @override
   void initState() {
     super.initState();
+    controller = new TabController(vsync: this, length: 2);
+  }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: <Widget>[
-        _buildAppBar(),
-        _buildNewsList(),
-      ],
+    return new Scaffold(
+      appBar: new AppBar(
+        elevation: 2.0,
+        backgroundColor: Theme.of(context).primaryColor,
+        bottom: new TabBar(
+          controller: controller,
+          tabs: <Widget>[
+            new Tab(text: 'All'),
+            new Tab(text: 'Sports')
+          ],
+        ),
+        title: new Text(
+          Strings.newsHeader, 
+        )
+      ),
+      body: new TabBarView(
+        controller: controller,
+        children: <Widget>[
+          _buildNewsList(),
+          _buildNewsListSports(),
+        ],
+      ),
     );
   }
 
   Widget _buildNewsList() {
-    return new Flexible(
-      child: new Container(
-        color: Colors.purple,
+      return new Container(
+        color: Colors.white24,
         child: new StreamBuilder(
-          stream: Firestore.instance.collection('news').snapshots(),
+          stream: Firestore.instance.collection('news').where("schoolId", isEqualTo: schoolId).snapshots(),
           builder: (context, snapshot) {
             if(!snapshot.hasData) {
-              return ProgressIndicatior();
+              return MyProgressIndicator();
             } else {
               return new ListView.builder(
                 itemExtent: 160.0,
@@ -48,6 +74,27 @@ class NewsPageState extends State<NewsPage> {
             }
           },
         ),
+      );
+  }
+
+  Widget _buildNewsListSports() {
+    return new Container(
+      color: Colors.white24,
+      child: new StreamBuilder(
+        stream: Firestore.instance.collection('news').where("schoolId", isEqualTo: schoolId)
+                .where("isSportsNews", isEqualTo: true)
+                .snapshots(),
+        builder: (context, snapshot) {
+          if(!snapshot.hasData) {
+            return MyProgressIndicator();
+          } else {
+            return new ListView.builder(
+              itemExtent: 160.0,
+              itemCount: snapshot.data.documents.length, //should change based on db count
+              itemBuilder: (_, index) => new NewsRow(_mapToNews(snapshot.data.documents[index])),
+            );
+          }
+        },
       ),
     );
   }
@@ -55,34 +102,4 @@ class NewsPageState extends State<NewsPage> {
   Object _mapToNews(DocumentSnapshot doc) {
     return News.fromMap(doc.data, doc.documentID);
   }
-
-  Widget _buildAppBar() {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-
-    return new Container(
-      padding: new EdgeInsets.only(top: statusBarHeight),
-      height: statusBarHeight + 66.0,
-      child: new Center(
-        child: new Text(
-          "News",
-          style: new TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 36.0
-          ),
-        ),
-      ),
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          colors: [Colors.blue, Colors.indigo],
-          begin: const FractionalOffset(0.0, 0.0),
-          end: const FractionalOffset(0.5, 0.0),
-          stops: [0.0, 1.0],
-          tileMode: TileMode.clamp
-        )
-      ),
-    );
-  }
-
-
 }

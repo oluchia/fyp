@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "662333762184",
-    "firebase_url": "https://abstrct-fyp-test.firebaseio.com",
-    "project_id": "abstrct-fyp-test",
-    "storage_bucket": "abstrct-fyp-test.appspot.com"
+    "project_number": "801245334900",
+    "firebase_url": "https://abstract-fyp.firebaseio.com",
+    "project_id": "abstract-fyp",
+    "storage_bucket": "abstract-fyp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:662333762184:android:2afc2cbb2b4b3171",
+        "mobilesdk_app_id": "1:801245334900:android:a548e6aa117e725f",
         "android_client_info": {
-          "package_name": "com.example.helloworld"
+          "package_name": "ie.nuigalway.it.abstract"
         }
       },
       "oauth_client": [
         {
-          "client_id": "662333762184-5l3203hk2ssov91q1ijrnqtm9do5lvg6.apps.googleusercontent.com",
+          "client_id": "801245334900-tase7fecqr0u9oormf6fqlelb3q19mhu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCrk7KYg9naclu5VleAg0aGZpWi-BdR1z0"
+          "current_key": "AIzaSyAdIDYziqStBVHlGAmT5AS0rqZcki9mCDs"
         }
       ],
       "services": {

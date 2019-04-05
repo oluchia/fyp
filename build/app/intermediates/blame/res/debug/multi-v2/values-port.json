@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/OluchiAnyabuike/Documents/git/fyp/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "/Users/OluchiAnyabuike/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/3637d89355e0b4b6863cc573755bca42/res/values-port/values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}

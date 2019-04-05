@@ -1,4 +1,4 @@
-import 'package:hello_world/routes.dart';
+import 'package:fyp/routes.dart';
 import 'package:flutter/services.dart';
 
 void main() {

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fyp/services/rest_calls.dart';
 
 //In Dart, every class defines an implicit interface
 //Use an abstract class to define an interface that cannot be instantiated
@@ -10,6 +11,8 @@ abstract class BaseAuth {
   Future<FirebaseUser> getCurrentUser();
   Future<String> getCurrentUserEmail();
   Future<void> signOut();
+  Future<void> deleteAccount();
+  Future<void> reAuthenticate(String email, String password);
 }
 
 class Auth implements BaseAuth {
@@ -29,6 +32,8 @@ class Auth implements BaseAuth {
       email: email,
       password: password
     );
+
+    await addUserToFirebaseCollection(user);
 
     return user.uid;
   }
@@ -50,5 +55,15 @@ class Auth implements BaseAuth {
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
   }
-}
 
+  Future<void> deleteAccount() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    return user.delete();
+  }
+
+  Future<void> reAuthenticate(String email, String password) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    AuthCredential credential = EmailAuthProvider.getCredential(email: email, password: password );
+    return user.reauthenticateWithCredential(credential);
+  }
+}

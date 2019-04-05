@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validate/validate.dart';
-import 'package:hello_world/utils/progress.dart';
+import 'package:fyp/utils/progress.dart';
 import 'dart:async';
-import 'package:hello_world/services/authentication.dart';
-import 'package:hello_world/services/rest_calls.dart';
+import 'package:fyp/services/authentication.dart';
+import 'package:fyp/services/rest_calls.dart';
+import 'package:fyp/models/client.dart';
 
 class LoginPage extends StatefulWidget { 
   LoginPage({this.auth, this.onSignedIn});
@@ -67,14 +68,14 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
 
     if(_validateAndSave()) {
       String userId = "";
-    
+
+      final contact = await fetchContactFromCRM(_email);
+
       try {
         if (_formMode == FormMode.LOGIN) {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in user: $userId'); 
         } else {
-          final contact = await fetchContactFromCRM(_email);
-
           if(contact.pin == _pin && contact.email == _email) { 
             userId = await widget.auth.signUp(_email, _password);
             print('Signed up user: $userId'); 
@@ -97,10 +98,10 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
           setState(() {
             _isLoading = false;
             if (_isIOS) {
-              _errorMessage = e.details;
+              _errorMessage = e.toString();
               _showDialog();
             } else {
-              _errorMessage = e.message;
+              _errorMessage = e.toString();
               _showDialog();
             }
           });
@@ -154,7 +155,7 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
 
   Widget _showProgressIndicator() {
     if(_isLoading) {
-      return ProgressIndicatior();
+      return MyProgressIndicator();
     } return Container();
   }
 
@@ -190,8 +191,16 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
   }
 
   Widget _showLogo() {
-    return new FlutterLogo(
-      size: _iconAnimation.value * 140.0,
+    // return new FlutterLogo(
+    //   size: _iconAnimation.value * 140.0,
+    // );
+    return new Image(
+      image: AssetImage('assets/images/image.png'),
+      width:  _iconAnimation.value * 140.0,
+      height:  _iconAnimation.value * 140.0,
+      color: null,
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.center
     );
   }
 

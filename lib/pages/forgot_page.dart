@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:hello_world/services/authentication.dart';
+import 'package:fyp/services/authentication.dart';
 
 class PasswordPage extends StatefulWidget {
   PasswordPage({this.auth});
